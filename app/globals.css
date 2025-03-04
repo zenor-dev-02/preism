@@ -1,0 +1,213 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-color: #7214FF;
+  --secondary-color: #4E1BA6;
+  --accent-color: #00D5FF;
+  --text-primary: #1B1C31;
+  --text-secondary: #6F6C90;
+  --gradient-primary: linear-gradient(135deg, #7214FF 0%, #4E1BA6 100%);
+  --gradient-secondary: linear-gradient(135deg, #00D5FF 0%, #4E1BA6 100%);
+}
+
+@layer base {
+  body {
+    @apply text-[#1B1C31] bg-[#FAFAFA];
+  }
+}
+
+@layer components {
+  .container {
+    @apply max-w-[1280px] mx-auto px-4;
+  }
+
+  .gradient-text {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #7214FF 0%, #4E1BA6 100%);
+  }
+
+  .search-bar {
+    @apply flex items-center gap-4 max-w-2xl mx-auto bg-white rounded-2xl p-2 shadow-lg transition-all duration-300 hover:shadow-xl;
+  }
+
+  .search-input {
+    @apply flex-1 px-6 py-4 text-lg border-none outline-none bg-transparent placeholder-[#6F6C90];
+  }
+
+  .generate-button {
+    @apply px-8 py-4 bg-gradient-primary text-white font-semibold rounded-xl 
+    transition-all duration-300 hover:shadow-lg hover:scale-105 active:scale-95;
+  }
+
+  .tag-list {
+    @apply flex flex-wrap gap-3;
+  }
+
+  .tag {
+    @apply px-4 py-2 rounded-full text-[#6F6C90] hover:text-primary transition-all duration-300
+    hover:shadow-md hover:scale-105 active:scale-95;
+  }
+
+  .feature-card {
+    @apply p-8 rounded-2xl bg-white shadow-sm hover:shadow-xl transition-all duration-300
+    hover:scale-105 hover:-translate-y-1;
+  }
+
+  .image-card {
+    @apply aspect-[4/3] rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500;
+  }
+
+  .image-card img {
+    @apply transition-all duration-700;
+  }
+
+  .image-card:hover img {
+    @apply scale-110;
+  }
+
+  .cta-button {
+    @apply px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300
+    hover:shadow-lg hover:scale-105 active:scale-95;
+  }
+
+  .cta-button-outline {
+    @apply px-8 py-4 rounded-xl font-semibold text-lg border-2 transition-all duration-300
+    hover:shadow-lg hover:scale-105 active:scale-95;
+  }
+
+  .hero-image {
+    @apply absolute -inset-4 opacity-80 rounded-full;
+    background-image: url('/images/hero-image.png');
+    background-size: cover;
+    background-position: center;
+    filter: blur(8px);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes float-slow {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes float-fast {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-float-slow {
+  animation: float-slow 5s ease-in-out infinite;
+}
+
+.animate-float-fast {
+  animation: float-fast 2s ease-in-out infinite;
+}
+
+.pattern-bg {
+  background-image: url('/images/pattern-bg.png');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.1;
+}
+
+/* 響應式調整 */
+@media (max-width: 768px) {
+  .container {
+    @apply px-4;
+  }
+
+  .search-bar {
+    @apply flex-col;
+  }
+
+  .generate-button {
+    @apply w-full;
+  }
+
+  .feature-card {
+    @apply p-6;
+  }
+}
+
+/* 新增漸變背景效果 */
+.bg-gradient-primary {
+  background-image: linear-gradient(135deg, #7214FF 0%, #4E1BA6 100%);
+}
+
+.bg-gradient-secondary {
+  background-image: linear-gradient(135deg, #00D5FF 0%, #4E1BA6 100%);
+}
+
+/* 磨砂玻璃效果 */
+.backdrop-blur-sm {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* 陰影效果 */
+.shadow-hover {
+  @apply transition-shadow duration-300 hover:shadow-xl;
+}
+
+/* 圖片網格佈局 */
+.grid-gallery {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.grid-gallery > div:nth-child(3n+2) {
+  grid-column: span 2;
+}
+
+/* 動畫效果 */
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+/* 卡片懸停效果 */
+.hover-card {
+  @apply transform transition-all duration-300 hover:scale-105 hover:-translate-y-1;
+}
+
+/* 標題樣式 */
+.section-title {
+  @apply text-4xl lg:text-5xl font-bold;
+}
+
+.section-subtitle {
+  @apply text-lg text-[#6F6C90];
+}
+
+/* 按鈕樣式 */
+.btn-primary {
+  @apply bg-gradient-primary text-white;
+}
+
+.btn-outline {
+  @apply border-2 border-white text-white;
+} 
