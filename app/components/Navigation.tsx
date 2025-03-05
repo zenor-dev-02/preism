@@ -6,8 +6,12 @@ import { useState } from 'react'
 import { Dialog } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { useLanguage } from '../contexts/LanguageContext'
+import { useAuth } from '../contexts/AuthContext'
 import { translations } from '../locales/translations'
 import AuthModal from './AuthModal'
+import * as authService from '../services/auth'
+import { useLoading } from '../contexts/LoadingContext'
+import { useRouter } from 'next/navigation'
 
 type NavKeys = 'home' | 'portfolio' | 'news' | 'pricing' | 'contact' | 'talents'
 
@@ -27,10 +31,29 @@ export default function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [authModalOpen, setAuthModalOpen] = useState(false)
   const { language, setLanguage } = useLanguage()
+  const { isAuthenticated, user, token, logout: authLogout } = useAuth()
   const t = translations[language]
+  const { setIsLoading } = useLoading()
+  const router = useRouter()
 
   const toggleLanguage = () => {
     setLanguage(language === 'zh' ? 'en' : 'zh')
+  }
+
+  const handleLogout = async () => {
+    try {
+      if (token) {
+        await authService.logout(token)
+      }
+      authLogout()
+    } catch (error) {
+      console.error('Logout failed:', error)
+    }
+  }
+
+  const handleNavigation = (path: string) => {
+    setIsLoading(true)
+    router.push(path)
   }
 
   return (
@@ -70,18 +93,34 @@ export default function Navigation() {
             >
               {language === 'zh' ? 'EN' : '中文'}
             </button>
-            <button
-              onClick={() => setAuthModalOpen(true)}
-              className="inline-flex items-center justify-center h-9 px-4 text-sm font-semibold text-gray-700 hover:text-primary transition-colors"
-            >
-              {t.nav.login}
-            </button>
-            <button
-              onClick={() => setAuthModalOpen(true)}
-              className="inline-flex items-center justify-center h-9 px-4 text-sm font-semibold text-white bg-primary rounded-lg hover:bg-primary/90 transition-colors"
-            >
-              {t.nav.join}
-            </button>
+            {isAuthenticated ? (
+              <>
+                <span className="text-sm font-semibold text-gray-700">
+                  {user?.email}
+                </span>
+                <button
+                  onClick={handleLogout}
+                  className="inline-flex items-center justify-center h-9 px-4 text-sm font-semibold text-white bg-primary rounded-lg hover:bg-primary/90 transition-colors"
+                >
+                  {t.nav.logout}
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={() => setAuthModalOpen(true)}
+                  className="inline-flex items-center justify-center h-9 px-4 text-sm font-semibold text-gray-700 hover:text-primary transition-colors"
+                >
+                  {t.nav.login}
+                </button>
+                <button
+                  onClick={() => setAuthModalOpen(true)}
+                  className="inline-flex items-center justify-center h-9 px-4 text-sm font-semibold text-white bg-primary rounded-lg hover:bg-primary/90 transition-colors"
+                >
+                  {t.nav.join}
+                </button>
+              </>
+            )}
           </div>
         </nav>
         <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
@@ -120,18 +159,34 @@ export default function Navigation() {
                   >
                     {language === 'zh' ? 'EN' : '中文'}
                   </button>
-                  <button
-                    onClick={() => setAuthModalOpen(true)}
-                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-700 hover:bg-gray-50 transition-colors"
-                  >
-                    {t.nav.login}
-                  </button>
-                  <button
-                    onClick={() => setAuthModalOpen(true)}
-                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-white bg-primary hover:bg-primary/90 transition-colors"
-                  >
-                    {t.nav.join}
-                  </button>
+                  {isAuthenticated ? (
+                    <>
+                      <div className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-700">
+                        {user?.email}
+                      </div>
+                      <button
+                        onClick={handleLogout}
+                        className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-white bg-primary hover:bg-primary/90 transition-colors"
+                      >
+                        {t.nav.logout}
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => setAuthModalOpen(true)}
+                        className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-700 hover:bg-gray-50 transition-colors"
+                      >
+                        {t.nav.login}
+                      </button>
+                      <button
+                        onClick={() => setAuthModalOpen(true)}
+                        className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-white bg-primary hover:bg-primary/90 transition-colors"
+                      >
+                        {t.nav.join}
+                      </button>
+                    </>
+                  )}
                 </div>
               </div>
             </div>

@@ -9,6 +9,7 @@ export const translations = {
       contact: '聯絡我們',
       login: '登入',
       join: '加入',
+      logout: '登出',
       talents: '演員資料庫'
     },
     hero: {
@@ -122,6 +123,7 @@ export const translations = {
       contact: 'Contact',
       login: 'Login',
       join: 'Join',
+      logout: 'Logout',
       talents: 'Talent Database'
     },
     hero: {

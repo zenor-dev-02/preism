@@ -36,9 +36,11 @@ export const register = async (req: Request, res: Response) => {
     });
 
     // Generate token
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET!, {
-      expiresIn: process.env.JWT_EXPIRES_IN,
-    });
+    const token = jwt.sign(
+      { id: user.id },
+      process.env.JWT_SECRET || 'default-secret',
+      { expiresIn: '7d' }
+    );
 
     // Save token
     await prisma.token.create({
@@ -83,9 +85,11 @@ export const login = async (req: Request, res: Response) => {
     }
 
     // Generate token
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET!, {
-      expiresIn: process.env.JWT_EXPIRES_IN,
-    });
+    const token = jwt.sign(
+      { id: user.id },
+      process.env.JWT_SECRET || 'default-secret',
+      { expiresIn: '7d' }
+    );
 
     // Save token
     await prisma.token.create({
